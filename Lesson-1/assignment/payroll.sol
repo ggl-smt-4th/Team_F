@@ -1,3 +1,4 @@
+
 pragma solidity ^0.4.14;
 
 contract Payroll {
@@ -13,6 +14,10 @@ contract Payroll {
 	function updateEmployee(address e, uint s) {
 		//如果是只有owner才能调用此函数更改，需要加上以下条件
 	   if(msg.sender != owner){
+	   revert();
+	   }
+	   //改变钱包地址和薪水额度时，应该会有传入的参数校验（参数格式是否正确）
+	   if(){
 	   revert();
 	   }
        employee = e;
