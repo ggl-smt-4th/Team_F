@@ -17,9 +17,6 @@ contract Payroll {
 	   revert();
 	   }
 	   //改变钱包地址和薪水额度时，应该会有传入的参数校验（参数格式是否正确）
-	   if(){
-	   revert();
-	   }
        employee = e;
        salary = s;
      
