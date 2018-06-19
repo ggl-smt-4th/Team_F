@@ -3,7 +3,7 @@ pragma solidity ^0.4.14;
 contract SinglePayroll {
    uint salary;
    address employee;
-   uint payDuration = 5 seconds;
+   uint payDuration = 30 days;
    uint lastPayday;
 
    function SinglePayroll() {
