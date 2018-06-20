@@ -5,10 +5,10 @@ pragma solidity ^0.4.14;
 contract Payroll {
     uint constant payDuration = 10 seconds;
 
-    address owner;
-    uint salary;
-    address employee;
-    uint lastPayday;
+    address owner = 0xca35b7d915458ef540ade6068dfe2f44e8fa733c;
+    uint salary = 1 ether;
+    address employee = 0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db;
+    uint lastPayday = now;
 
     function Payroll() {
         owner = msg.sender;
