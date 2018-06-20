@@ -14,7 +14,8 @@ contract payRoll {
         if(s == 0){
             revert();
         }
-    }employee = e;
+    }
+    employee = e;
     salary = s;
 }
 
