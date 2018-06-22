@@ -2,21 +2,33 @@
 pragma solidity ^0.4.14;
 contract payRoll {
     uint constant payDuration = 10 seconds;
-    address owner = 0xca35b7d915458ef540ade6068dfe2f44e8fa733c;
-    uint salary = 1 ether;
-    address employee = 0x14723a09acff6d2a60dcdf7aa4aff308fddc160c;
-    uint lastPayday = now;
+    
+    address owner;
+    uint salary;
+    address employee;
+    uint lastPayday;
+ 
+    function Payroll(){
+          owner = msg.sender;
+    }
     
     function updateEmployee(address e, uint s) {
-        if(msg.sender != owner){
+        if(employee != 0x0){
+	  unit payment = salary * (now - lastPayday) / payDuration);
+	  employee.transfer(payment);
+	  }
+	
+	if(msg.sender != owner){
             revert();
         }
         if(s == 0){
             revert();
         }
     }
+    
     employee = e;
     salary = s;
+    lastPayday = now;
 }
 
 function addFund() payable returns (uint) {
