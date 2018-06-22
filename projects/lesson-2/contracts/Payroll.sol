@@ -9,7 +9,7 @@ contract Payroll {
         uint lastPayDate;
     }
 
-    uint constant payDuration = 10 seconds;
+    uint constant payDuration = 30 days;
     uint totalSalary = 0;
 
     address owner;
