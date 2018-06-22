@@ -18,16 +18,11 @@ contract payRoll {
 	  employee.transfer(payment);
 	  }
 	
-	if(msg.sender != owner){
-            revert();
-        }
-        if(s == 0){
-            revert();
-        }
-    }
+	require(msg.sender == owner);
+	require(s != 0);
     
     employee = e;
-    salary = s;
+    salary = s * 1 ether;
     lastPayday = now;
 }
 
@@ -43,14 +38,11 @@ function addFund() payable returns (uint) {
     }
     
     function getPaid() {
-      if(msg.sender != employee){
-	   revert();
-	   }
+      require(msg.sender == employee);
+     
       uint nextPayday = lastPayday+payDuration;
-      if(nextPayday > now ){
-          revert();
-          
-      }
+      assert(nextPayday < now);
+      
       lastPayday = nextPayday;
       employee.transfer(salary);
     }
