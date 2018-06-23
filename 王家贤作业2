@@ -1,8 +1,8 @@
      Employee[] employees;
      uint totalSalary = 0;
      
--    function Payroll(){
-+    function Payroll()payable public{
+    function Payroll(){
+    function Payroll()payable public{
          owner = msg.sender;
      }
      function _partialPaid(Employee employee)private{
@@ -10,16 +10,16 @@
          }
      }
      
--    function addEmployee(address employeeId, uint salary){
-+    function addEmployee(address employeeId, uint salary)public{
+    function addEmployee(address employeeId, uint salary){
+    function addEmployee(address employeeId, uint salary)public{
          require(msg.sender == owner);
          var (employee,index) = _findEmployee(employeeId);
          assert(employee.id == 0x0);
          totalSalary = totalSalary+salary * 1 ether;
          employees.push(Employee(employeeId,salary * 1 ether,now));
      }
--    function removeEmployee(address employeeId){
-+    function removeEmployee(address employeeId)public{
+    function removeEmployee(address employeeId){
+    function removeEmployee(address employeeId)public{
          require(msg.sender == owner);
           var (employee,index) = _findEmployee(employeeId);
           assert(employee.id != 0x0);
@@ -27,8 +27,8 @@
  
      
  
--	function updateEmployee(address employeeId, uint salary) {
-+	function updateEmployee(address employeeId, uint salary) public{
+	function updateEmployee(address employeeId, uint salary) {
+	function updateEmployee(address employeeId, uint salary) public{
  	    require(msg.sender == owner);
  	     var (employee,index) = _findEmployee(employeeId);
  	      assert(employee.id != 0x0);
@@ -36,23 +36,23 @@
       
      }
      
--    function addFund() payable returns (uint) {
-+    function addFund() payable public returns (uint) {
+    function addFund() payable returns (uint) {
+    function addFund() payable public returns (uint) {
          return this.balance;
      }
      
--    function calculateRunway() returns (uint) {
-+    function calculateRunway()public view returns (uint) {
+    function calculateRunway() returns (uint) {
+    function calculateRunway()public view returns (uint) {
          
          return this.balance / totalSalary ;
      }
      
--    function hasEnoughFund() returns (bool) {
-+    function hasEnoughFund()public view returns (bool) {
+    function hasEnoughFund() returns (bool) {
+    function hasEnoughFund()public view returns (bool) {
          return calculateRunway() > 0;
      }
      
--    function getPaid() {
-+    function getPaid() public{
+    function getPaid() {
+    function getPaid() public{
        var (employee,index) = _findEmployee(msg.sender);
  	  assert(employee.id != 0x0);
