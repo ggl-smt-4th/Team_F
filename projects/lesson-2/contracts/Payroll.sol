@@ -11,7 +11,7 @@ contract Payroll {
     }
 
     uint constant payDuration = 30 days;
-
+    uint totalSalary;
     address owner;
     Employee[] employees;
     
@@ -42,6 +42,7 @@ contract Payroll {
         var (employee,index) = _findEmployee(employeeAddress);
         assert(employee.id == 0x0);
         
+        totalSalary += salary * 1 ether;
         employees.push(Employee(employeeAddress,salary * 1 ether,now));
     }
 
@@ -55,6 +56,7 @@ contract Payroll {
         delete employees[index];
         employees[index] = employees[employees.length - 1];
         employees.length -= 1;
+        totalSalary -= employee.salary;
     }
 
     /*更新员工信息*/
@@ -65,6 +67,10 @@ contract Payroll {
         assert(employee.id != 0x0);
         
         _particlePaid(employee);
+        
+        totalSalary -= employee.salary * 1 ether;
+        totalSalary += salary * 1 ether;
+        
         employee.id = employeeAddress;
         employee.salary = salary * 1 ether;
         employee.lastPayday = now;
@@ -76,11 +82,6 @@ contract Payroll {
 
     function calculateRunway() public view returns (uint) {
         // TODO: your code here
-        uint totalSalary = 0;
-        for (uint i=0; i < employees.length; i++) {
-            totalSalary += employees[i].salary;
-        }
-
         assert (totalSalary > 0);
 
         return address(this).balance / totalSalary;
