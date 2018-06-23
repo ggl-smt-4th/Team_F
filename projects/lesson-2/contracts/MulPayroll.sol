@@ -78,7 +78,7 @@ contract Payroll {
     }
 
     function calculateRunway() public view returns (uint) {
-        return this.balance / totalSalary;
+        return address(this).balance;
     }
 
     function hasEnoughFund() public view returns (bool) {
@@ -93,6 +93,7 @@ contract Payroll {
         assert(nextPayday < now);
 
         employees[index].lastPayday = nextPayday;
-        employees[index].id.transfer(employees[index].salary * 1 ether);
+        uint payment = employees[index].salary * 1 ether;
+        employees[index].id.transfer(payment);
     }
 }
