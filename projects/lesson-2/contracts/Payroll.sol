@@ -83,7 +83,7 @@ contract Payroll {
 
         assert (totalSalary > 0);
 
-        return this.balance / totalSalary;
+        return address(this).balance / totalSalary;
         
     }
 
