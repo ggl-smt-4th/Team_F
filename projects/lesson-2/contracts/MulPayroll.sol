@@ -25,7 +25,7 @@ contract Payroll {
 	    }
 	}
 
-    function _addSalary() returns (uint) {
+    function _addSalary() public returns (uint) {
         for (uint i; i < employees.length; i++) {
             totalSalary += employees[i].salary;
             return totalSalary;
@@ -85,7 +85,7 @@ contract Payroll {
         return calculateRunway() > 0;
     }
 
-    function getPaid() {
+    function getPaid() public {
         var (employee, index) = _findEmployee(msg.sender);
         assert(employee.id != 0x0);
 
