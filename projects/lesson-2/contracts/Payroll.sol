@@ -10,17 +10,23 @@ contract Payroll {
 
     uint constant payDuration = 31 days;
 
+    uint totalSalary;
+
     address owner;
     Employee[] employees;
 
     function Payroll() payable public {
         owner = msg.sender;
+        totalSalary = 0;
     }
 
     function addEmployee(address employeeAddress, uint salary) public {
         require(msg.sender == owner);
-        
-        employees.push(Employee(employeeAddress, salary * 1 ether, now));
+
+        uint salaryInEther = salary * 1 ether;
+        employees.push(Employee(employeeAddress, salaryInEther, now));
+
+        totalSalary += salaryInEther;
         
     }
 
@@ -29,7 +35,7 @@ contract Payroll {
         
         var (employee, index) = _findEmployeeWithAddress(employeeId);
 
-
+        totalSalary -= employee.salary;
         assert (employee.id != 0x0);
         
         delete employees[index];
@@ -65,6 +71,8 @@ contract Payroll {
 
         employees[index].lastPayDay = now;
 
+        totalSalary += salaryInETH - lastSalary;
+
         if (remainingPayDay > 0) {
             employees[index].id.transfer(remainingPayDay / payDuration * lastSalary);
         }
@@ -75,12 +83,8 @@ contract Payroll {
     }
 
     function calculateRunway() public view returns (uint) {
-        uint totalSalary = 0;
-        for (uint i=0; i < employees.length; i++) {
-            totalSalary += employees[i].salary;
-        }
 
-        assert (totalSalary > 0);
+        require(totalSalary > 0);
 
         return this.balance / totalSalary;
         
