@@ -10,7 +10,7 @@ contract Payroll {
         uint lastPayday;
     }
 
-    uint constant payDuration = 30days;
+    uint constant payDuration = 30 days;
 
     address owner;
     Employee[] employees;
