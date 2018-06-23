@@ -8,7 +8,7 @@ contract Payroll {
         uint lastPayday;
     }
 
-    uint constant payDuration = 30 days;
+    uint constant payDuration = 10 seconds;
     uint totalSalary = 0;
 
     address owner;
@@ -17,6 +17,13 @@ contract Payroll {
     function Payroll() payable public {
         owner = msg.sender;
     }
+
+    function _findEmployee(address employeeAddress)  private returns (Employee, uint) {
+	    for(uint i = 0; i < employees.length; i++) {
+	        if(employees[i].id == employeeAddress)
+	            return (employees[i], i);
+	    }
+	}
 
     function _addSalary() returns (uint) {
         for (uint i; i < employees.length; i++) {
@@ -78,15 +85,14 @@ contract Payroll {
         return calculateRunway() > 0;
     }
 
-    function getPaid() public {
-       for (uint i = 0; i < employees.length; i++) {
-           if (msg.sender == employees[i].id) {
-               uint nextPayday = employees[i].lastPayday + payDuration;
-               assert(nextPayday < now);
+    function getPaid() {
+        var (employee, index) = _findEmployee(msg.sender);
+        assert(employee.id != 0x0);
 
-               employees[i].lastPayday = nextPayday;
-               employees[i].id.transfer(employees[i].salary * 1 ether);
-           }
-       }
+        uint nextPayday = employee.lastPayday + payDuration;
+        assert(nextPayday < now);
+
+        employees[index].lastPayday = nextPayday;
+        employees[index].id.transfer(employees[index].salary * 1 ether);
     }
 }
