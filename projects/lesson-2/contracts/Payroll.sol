@@ -20,8 +20,7 @@ contract Payroll {
         totalSalary = 0;
     }
 
-    function addEmployee(address employeeAddress, uint salary) public {
-        require(msg.sender == owner);
+    function addEmployee(address employeeAddress, uint salary) public ownerOnly {
 
         uint salaryInEther = salary * 1 ether;
         employees[employeeAddress] = Employee(employeeAddress, salaryInEther, now);
@@ -30,9 +29,8 @@ contract Payroll {
         
     }
 
-    function removeEmployee(address employeeId) public {
-        require(msg.sender == owner);
-        
+    function removeEmployee(address employeeId) public ownerOnly {
+
         Employee employee = employees[employeeId];
 
         totalSalary -= employee.salary;
@@ -41,11 +39,15 @@ contract Payroll {
         delete employees[employeeId];
 
     }
+
+    modifier ownerOnly {
+        require(msg.sender == owner);
+        _;
+    }
     
 
-    function updateEmployee(address employeeAddress, uint salary) public {
-        require(msg.sender == owner);
-        
+    function updateEmployee(address employeeAddress, uint salary) public ownerOnly {
+
         Employee employee = employees[employeeAddress];
 
         assert (employee.id != 0x0);
