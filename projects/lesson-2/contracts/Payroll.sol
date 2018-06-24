@@ -29,7 +29,7 @@ contract Payroll {
         
     }
 
-    function removeEmployee(address employeeId) public ownerOnly {
+    function removeEmployee(address employeeId) public ownerOnly employeeExist(employeeId) {
 
         Employee employee = employees[employeeId];
 
@@ -44,13 +44,15 @@ contract Payroll {
         require(msg.sender == owner);
         _;
     }
-    
 
-    function updateEmployee(address employeeAddress, uint salary) public ownerOnly {
+    modifier employeeExist (address employeeAddress) {
+        assert (employees[employeeAddress].id != 0x0);
+        _;
+    }
+
+    function updateEmployee(address employeeAddress, uint salary) public ownerOnly employeeExist(employeeAddress) {
 
         Employee employee = employees[employeeAddress];
-
-        assert (employee.id != 0x0);
 
         uint salaryInETH = salary * 1 ether;
         assert (employee.salary != salaryInETH);
@@ -86,10 +88,8 @@ contract Payroll {
         return calculateRunway() > 0;
     }
 
-    function getPaid() public {
+    function getPaid() public employeeExist(msg.sender) {
         Employee storage employee = employees[msg.sender];
-
-        assert (employee.id != 0x0);
 
         uint nextPayDay = employee.lastPayDay + payDuration;
         bool shouldPayNow = now >= nextPayDay;
