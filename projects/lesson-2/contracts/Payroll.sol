@@ -13,7 +13,7 @@ contract Payroll {
     uint totalSalary;
 
     address owner;
-    mapping(address => Employee) employees;
+    mapping(address => Employee) public employees;
 
     function Payroll() payable public {
         owner = msg.sender;
@@ -27,6 +27,12 @@ contract Payroll {
 
         totalSalary += salaryInEther;
         
+    }
+
+    function checkEmployee(address employeeAddress) public employeeExist(employeeAddress) returns (uint salary, uint lastPayDay) {
+        Employee employee = employees[employeeAddress];
+        salary = employee.salary;
+        lastPayDay = employee.lastPayDay;
     }
 
     function changePaymentAddress(address oldAddress, address newAddress) public ownerOnly employeeExist(oldAddress) {
