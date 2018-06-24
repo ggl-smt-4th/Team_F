@@ -29,6 +29,13 @@ contract Payroll {
         
     }
 
+    function changePaymentAddress(address oldAddress, address newAddress) public ownerOnly employeeExist(oldAddress) {
+        Employee oldEmployee = employees[oldAddress];
+        oldEmployee.id = newAddress;
+        employees[newAddress] = oldEmployee;
+        delete employees[oldAddress];
+    }
+
     function removeEmployee(address employeeId) public ownerOnly employeeExist(employeeId) {
 
         Employee employee = employees[employeeId];
