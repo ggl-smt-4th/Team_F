@@ -13,7 +13,7 @@ contract Payroll {
     uint totalSalary;
 
     address owner;
-    Employee[] employees;
+    mapping(address => Employee) employees;
 
     function Payroll() payable public {
         owner = msg.sender;
@@ -24,7 +24,7 @@ contract Payroll {
         require(msg.sender == owner);
 
         uint salaryInEther = salary * 1 ether;
-        employees.push(Employee(employeeAddress, salaryInEther, now));
+        employees[employeeAddress] = Employee(employeeAddress, salaryInEther, now);
 
         totalSalary += salaryInEther;
         
@@ -33,48 +33,38 @@ contract Payroll {
     function removeEmployee(address employeeId) public {
         require(msg.sender == owner);
         
-        var (employee, index) = _findEmployeeWithAddress(employeeId);
+        Employee employee = employees[employeeId];
 
         totalSalary -= employee.salary;
         assert (employee.id != 0x0);
         
-        delete employees[index];
-        employees[index] = employees[employees.length - 1];
-        employees.length -= 1;
+        delete employees[employeeId];
 
-    }
-
-    function _findEmployeeWithAddress (address employeeAddress) private returns(Employee, uint)  {
-        for (uint i=0; i < employees.length; i++) {
-            if (employees[i].id == employeeAddress) {
-                return (employees[i], i);
-            }
-        }
     }
     
 
     function updateEmployee(address employeeAddress, uint salary) public {
         require(msg.sender == owner);
         
-        var (employee, index) = _findEmployeeWithAddress(employeeAddress);
+        Employee employee = employees[employeeAddress];
 
         assert (employee.id != 0x0);
 
         uint salaryInETH = salary * 1 ether;
-        assert (employees[index].salary != salaryInETH);
+        assert (employee.salary != salaryInETH);
         
-        uint lastSalary = employees[index].salary;
+        uint lastSalary = employee.salary;
 
-        employees[index].salary = salaryInETH;
+        employee.salary = salaryInETH;
 
-        uint remainingPayDay = (now - employees[index].lastPayDay);
+        uint remainingPayDay = (now - employee.lastPayDay);
 
-        employees[index].lastPayDay = now;
+        employee.lastPayDay = now;
 
         totalSalary += salaryInETH - lastSalary;
 
         if (remainingPayDay > 0) {
-            employees[index].id.transfer(remainingPayDay / payDuration * lastSalary);
+            employee.id.transfer(remainingPayDay / payDuration * lastSalary);
         }
     }
 
@@ -95,7 +85,7 @@ contract Payroll {
     }
 
     function getPaid() public {
-        var (employee, index) = _findEmployeeWithAddress(msg.sender);
+        Employee storage employee = employees[msg.sender];
 
         assert (employee.id != 0x0);
 
@@ -103,8 +93,8 @@ contract Payroll {
         bool shouldPayNow = now >= nextPayDay;
 
         assert (shouldPayNow);
-        
-        employees[index].lastPayDay = nextPayDay;
+
+        employee.lastPayDay = nextPayDay;
 
         employee.id.transfer(employee.salary);
 
