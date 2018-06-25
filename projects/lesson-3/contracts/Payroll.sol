@@ -93,7 +93,7 @@ contract Payroll {
 
         require(totalSalary > 0);
 
-        return this.balance / totalSalary;
+        return address(this).balance / totalSalary;
         
     }
 
