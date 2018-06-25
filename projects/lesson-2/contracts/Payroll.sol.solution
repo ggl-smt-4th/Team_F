@@ -2,83 +2,58 @@ pragma solidity ^0.4.14;
 
 contract Payroll {
 
+    address owner;
+    uint payDuration = 30 days;
+
     struct Employee {
-        address id;
         uint salary;
         uint lastPayday;
+        bool registered;
     }
 
-    uint constant payDuration = 30 days;
+    // use a mapping to store employees' information
+    mapping(address => Employee) employees;
+
     uint totalSalary = 0;
 
-    address owner;
-    Employee[] employees;
-
-    function Payroll() payable public {
+    constructor() payable public {
         owner = msg.sender;
     }
 
-    function _partialPaid(uint employeeIndex) private {
-        uint payment = employees[employeeIndex].salary * (now - employees[employeeIndex].lastPayday) / payDuration;
-        employees[employeeIndex].id.transfer(payment);
-    }
-
-    function _findEmployee(address employeeId) private view returns (int) {
-        for (uint i = 0; i < employees.length; i++) {
-            if (employees[i].id == employeeId) {
-                return int(i);
-            }
-        }
-        return - 1;
-    }
-
-    function _calculateTotalSalaryVerySlow() private view returns (uint) {
-        uint total = 0;
-        for (uint i = 0; i < employees.length; i++) {
-            total += employees[i].salary;
-        }
-        return total;
+    function _partialPaid(address employeeAddress) private {
+        uint payment = employees[employeeAddress].salary * (now - employees[employeeAddress].lastPayday) / payDuration;
+        employeeAddress.transfer(payment);
     }
 
     function addEmployee(address employeeAddress, uint salary) public {
-        require(msg.sender == owner);
-        int index = _findEmployee(employeeAddress);
-        assert(index == - 1);
-        salary = salary * 1 ether;
-        employees.push(Employee(employeeAddress, salary, now));
-
-        totalSalary += salary;
+        // check whether the employee has already been added
+        require(owner == msg.sender && !employees[employeeAddress].registered);
+        employees[employeeAddress].salary = salary * 1 ether;
+        employees[employeeAddress].lastPayday = now;
+        employees[employeeAddress].registered = true;
+        // update totalSalary
+        totalSalary += salary * 1 ether;
     }
 
-    function removeEmployee(address employeeId) public {
-        require(msg.sender == owner);
-        int index = _findEmployee(employeeId);
-        assert(index > - 1);
-
-        uint employeeIndex = uint(index);
-        _partialPaid(employeeIndex);
-        uint salary = employees[employeeIndex].salary;
-        delete employees[employeeIndex];
-        employees[employeeIndex] = employees[employees.length - 1];
-        employees.length -= 1;
-
-        totalSalary -= salary;
+    function removeEmployee(address employeeAddress) public {
+        // check whether the employee has already been added
+        require(owner == msg.sender && employees[employeeAddress].registered);
+        employees[employeeAddress].registered = false;
+        _partialPaid(employeeAddress);
+        // update totalSalary
+        totalSalary -= employees[employeeAddress].salary;
     }
 
-    function updateEmployee(address employeeAddress, uint salary) public {
-        require(msg.sender == owner);
-        int index = _findEmployee(employeeAddress);
-        assert(index > - 1);
-
-        uint employeeIndex = uint(index);
-        _partialPaid(employeeIndex);
-
-        uint oldSalary = employees[employeeIndex].salary;
-        salary = salary * 1 ether;
-        employees[employeeIndex].salary = salary;
-        employees[employeeIndex].lastPayday = now;
-
-        totalSalary += salary - oldSalary;
+    function updateEmployee(address employeeAddress, uint newSalary) public {
+        // update salary only if the employee is registered
+        require(owner == msg.sender && employees[employeeAddress].registered);
+        uint oldSalary = employees[employeeAddress].salary;
+        _partialPaid(employeeAddress);
+        // update salary and lastPayday
+        employees[employeeAddress].salary = newSalary * 1 ether;
+        employees[employeeAddress].lastPayday = now;
+        // update totalSalary
+        totalSalary = totalSalary - oldSalary + newSalary * 1 ether;
     }
 
     function addFund() payable public returns (uint) {
@@ -86,7 +61,6 @@ contract Payroll {
     }
 
     function calculateRunway() public view returns (uint) {
-        require(employees.length > 0);
         return address(this).balance / totalSalary;
     }
 
@@ -95,15 +69,11 @@ contract Payroll {
     }
 
     function getPaid() public {
-        int index = _findEmployee(msg.sender);
-        assert(index > - 1);
-
-        uint employeeIndex = uint(index);
-        uint nextPayday = employees[employeeIndex].lastPayday + payDuration;
+        require(employees[msg.sender].registered);
+        address employeeAddress = msg.sender;
+        uint nextPayday = employees[employeeAddress].lastPayday + payDuration;
         assert(nextPayday < now);
-
-        employees[employeeIndex].lastPayday = nextPayday;
-        employees[employeeIndex].id.transfer(employees[employeeIndex].salary);
+        employees[employeeAddress].lastPayday = now;
+        employeeAddress.transfer(employees[employeeAddress].salary);
     }
 }
-
