@@ -8,7 +8,7 @@ contract Payroll {
         uint lastPayDay;
     }
 
-    uint constant payDuration = 31 days;
+    uint constant payDuration = 30 days;
 
     uint totalSalary;
 
