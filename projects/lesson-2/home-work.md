@@ -1,128 +1,15 @@
-¼ÓÈëÊ®¸öÔ±¹¤£¬Ã¿¸öÔ±¹¤µÄĞ½Ë®¶¼ÊÇ 1ETH,Ã¿´Î¼ÓÈëÒ»¸öÔ±¹¤ºóµ÷ÓÃ `calculateRunway()` Õâ¸öº¯Êı£¬ÏûºÄµÄ gasÇé¿öÈçÏÂ£º
-addfund£º
-gas £º3000000
-transaction cost £º	21921
-execution cost£º649
+åŠ å…¥åä¸ªå‘˜å·¥ï¼Œæ¯ä¸ªå‘˜å·¥çš„è–ªæ°´éƒ½æ˜¯ 1ETH,æ¯æ¬¡åŠ å…¥ä¸€ä¸ªå‘˜å·¥åè°ƒç”¨ `calculateRunway()` è¿™ä¸ªå‡½æ•°ï¼Œæ¶ˆè€—çš„ gasæƒ…å†µå¦‚ä¸‹ï¼š
+employeeId	                             execution cost 
+0xca35b7d915458ef540ade6068dfe2f44e8fa733c	52803
+0xca35b7d915458ef540ade6068dfe2f44e8fa733c	53644
+0xca35b7d915458ef540ade6068dfe2f44e8fa733c	54485
+0xca35b7d915458ef540ade6068dfe2f44e8fa733c	55326
+0xca35b7d915458ef540ade6068dfe2f44e8fa733c	56167
+0xca35b7d915458ef540ade6068dfe2f44e8fa733c	57008
+0xca35b7d915458ef540ade6068dfe2f44e8fa733c	57849
+0xca35b7d915458ef540ade6068dfe2f44e8fa733c	58690
+0xca35b7d915458ef540ade6068dfe2f44e8fa733c	59531
 
-1¡¢
-addEmployee("0x14723a09acff6d2a60dcdf7aa4aff308fddc160c",1):
-gas £º3000000
-transaction cost £º	104834
-execution cost£º81962 
-
-calculateRunway()   
-gas £º3000000
-transaction cost £º	22974
-execution cost£º1702
-decoded output:"0","uint 256","100"
-
-2¡¢
-addEmployee("0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db",1):
-gas £º3000000
-transaction cost £º	90675
-execution cost£º	67803 
-
-calculateRunway()   
-gas £º3000000
-transaction cost £º	23755
-execution cost£º2483
-decoded output:"0","uint 256","50"
-
-3¡¢
-addEmployee("0x583031d1113ad414f02576bd6afabfb302140225",1):
-gas £º3000000
-transaction cost £º	91516
-execution cost£º68644 
-
-calculateRunway()   
-gas £º3000000
-transaction cost £º	24536
-execution cost£º3264
-decoded output:"0","uint 256","33"
-
-4¡¢
-addEmployee("0xdd870fa1b7c4700f2bd7f44238821c26f7392148",1):
-gas £º3000000
-transaction cost £º		92357
-execution cost£º69485 
-
-calculateRunway()   
-gas £º3000000
-transaction cost £º25317
-execution cost£º4045
-decoded output:"0","uint 256","25"
-
-5¡¢
-addEmployee("0xdd870fa1b7c4700f2bd7f44238821c26f7392149",1):
-gas £º3000000
-transaction cost £º		93198
-execution cost£º70326 
-
-calculateRunway()   
-gas £º3000000
-transaction cost £º	26098
-execution cost£º4826
-decoded output:"0","uint 256","20"
-
-6¡¢
-addEmployee("0xdd870fa1b7c4700f2bd7f44238821c26f7392150",1):
-gas £º3000000
-transaction cost £º		94039
-execution cost£º71167 
-
-calculateRunway()   
-gas £º3000000
-transaction cost £º	26879
-execution cost£º5607
-decoded output:"0","uint 256","16"
-
-7¡¢
-addEmployee("0xdd870fa1b7c4700f2bd7f44238821c26f7392151",1):
-gas £º3000000
-transaction cost £º		94880
-execution cost£º72008 
-
-calculateRunway()   
-gas £º3000000
-transaction cost £º	27660
-execution cost£º6388
-decoded output:"0","uint 256","14"
-
-8¡¢
-addEmployee("0xdd870fa1b7c4700f2bd7f44238821c26f7392152",1):
-gas £º3000000
-transaction cost £º	95721
-execution cost£º	72849 
-
-calculateRunway()   
-gas £º3000000
-transaction cost £º	28441
-execution cost£º7169
-decoded output:"0","uint 256","12"
-
-9¡¢
-addEmployee("0xdd870fa1b7c4700f2bd7f44238821c26f7392153",1):
-gas £º3000000
-transaction cost £º		96562
-execution cost£º	73690 
-
-calculateRunway()   
-gas £º3000000
-transaction cost £º	29222
-execution cost£º	7950
-decoded output:"0","uint 256","11"
-
-10¡¢
-addEmployee("0xdd870fa1b7c4700f2bd7f44238821c26f7392154",1):
-gas £º3000000
-transaction cost £º		97403 
-execution cost£º	74531 
-
-calculateRunway()   
-gas £º3000000
-transaction cost £º	30003
-execution cost£º	8731
-decoded output:"0","uint 256","10"
-Ã¿´Îµ÷ÓÃ`calculateRunway()` Õâ¸öº¯Êı£¬ÏûºÄÔö¼Ó781gas£¬Ô­ÒòÊÇºóÒ»´Î±È½ÏÇ°Ò»´Îµ÷ÓÃÑ­»·employeesÊ±Ôö¼ÓÁËÒ»´Î£¬ÕâÑùÔì³É¶àÓàµÄgasÏûºÄ¡£
-ÓÅ»¯Ë¼Â·£ºÉèÖÃÒ»¸öÈ«¾Ö±äÁ¿ totalSalary £¬ÔÚµ÷ÓÃaddEmployee()Ê±£¬±ä»¯totalSalaryµÄÖµ£¬µ÷ÓÃremoveEmployee()ºÍupdateEmployeeÊ±Ò²ÏàÓ¦±ä»¯totalSalary£¬×îºóµ÷ÓÃcalculateRunway()Ê±Ã¿´Î¾ÍÊÇ¹Ì¶¨µÄgasÏûºÄ£¬²âÊÔÊ±£¬ÓÅ»¯ºóÃ¿´ÎÏûºÄ
-860 gas¡£
+æ¯æ¬¡è°ƒç”¨addEmployee è¿™ä¸ªå‡½æ•°ï¼Œæ¶ˆè€—å¢åŠ 781gasï¼ŒåŸå› æ˜¯åœ¨è°ƒç”¨FORå¾ªç¯è¯­å¥æ—¶åä¸€æ¬¡ä¼šæ¯”å‰ä¸€æ¬¡å¤šè°ƒç”¨å¾ªç¯employeesæ—¶å¢åŠ äº†ä¸€æ¬¡ï¼Œè¿™æ ·é€ æˆå¤šä½™çš„gasæ¶ˆè€—ã€‚
+ä¼˜åŒ–æ€è·¯ï¼šè®¾ç½®ä¸€ä¸ªå…¨å±€å˜é‡ totalSalary ï¼Œåœ¨è°ƒç”¨addEmployee()æ—¶ï¼Œå˜åŒ–totalSalaryçš„å€¼ï¼Œè°ƒç”¨removeEmployee()å’ŒupdateEmployeeæ—¶ä¹Ÿç›¸åº”å˜åŒ–totalSalaryï¼Œæœ€åè°ƒç”¨calculateRunway()æ—¶æ¯æ¬¡å°±æ˜¯å›ºå®šçš„gasæ¶ˆè€—ï¼Œæµ‹è¯•æ—¶ï¼Œä¼˜åŒ–åæ¯æ¬¡æ¶ˆè€—
+860 gasã€‚
