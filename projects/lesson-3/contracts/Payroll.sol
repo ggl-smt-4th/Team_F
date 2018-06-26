@@ -1,5 +1,7 @@
 pragma solidity ^0.4.14;
 
+import './SafeMath.sol';
+
 contract Payroll {
 
     struct Employee {
@@ -8,7 +10,7 @@ contract Payroll {
         uint lastPayDay;
     }
 
-    uint constant payDuration = 31 days;
+    uint constant payDuration = 30 days;
 
     uint totalSalary;
 
@@ -20,13 +22,18 @@ contract Payroll {
         totalSalary = 0;
     }
 
-    function addEmployee(address employeeAddress, uint salary) public ownerOnly {
+    modifier validSalary(uint salary) {
+        SafeMath.mul(salary, 1 ether);
+        _;
+    }
 
-        uint salaryInEther = salary * 1 ether;
+    function addEmployee(address employeeAddress, uint salary) public validSalary(salary) ownerOnly {
+
+        uint salaryInEther = SafeMath.mul(uint(salary), 1 ether);
         employees[employeeAddress] = Employee(employeeAddress, salaryInEther, now);
 
         totalSalary += salaryInEther;
-        
+
     }
 
     function checkEmployee(address employeeAddress) public employeeExist(employeeAddress) returns (uint salary, uint lastPayDay) {
@@ -48,7 +55,7 @@ contract Payroll {
 
         totalSalary -= employee.salary;
         assert (employee.id != 0x0);
-        
+
         delete employees[employeeId];
 
     }
@@ -63,13 +70,14 @@ contract Payroll {
         _;
     }
 
-    function updateEmployee(address employeeAddress, uint salary) public ownerOnly employeeExist(employeeAddress) {
+    function updateEmployee(address employeeAddress, uint salary) public validSalary(salary) ownerOnly employeeExist
+    (employeeAddress) {
 
         Employee employee = employees[employeeAddress];
 
-        uint salaryInETH = salary * 1 ether;
+        uint salaryInETH = SafeMath.mul(uint(salary), 1 ether);
         assert (employee.salary != salaryInETH);
-        
+
         uint lastSalary = employee.salary;
 
         employee.salary = salaryInETH;
@@ -93,8 +101,8 @@ contract Payroll {
 
         require(totalSalary > 0);
 
-        return this.balance / totalSalary;
-        
+        return address(this).balance / totalSalary;
+
     }
 
     function hasEnoughFund() public view returns (bool) {

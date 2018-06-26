@@ -1,0 +1,23 @@
+# L(O) := O
+# L(A) := \[A, O]
+# L(B) := \[B, O]
+# L(C) := \[C, O]
+# L(K1) := K1 + merge(L(A) + L(B) + [A, B])
+## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      := K1 + merge(\[A, O] + \[B, O] + \[A, B])
+## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     := K1 + A + merge(\[O] + \[B, O] + \[B])
+## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      := K1 + A + B + merge(\[O] + \[O])
+## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      := K1 + A + B + O
+# L(K2) := K2 + merge(L(A) + L(C) + [A, B])
+## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      := K2 + merge(\[A, O] + \[C, O] + \[A, C])
+## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      := K2 + A + merge(\[O] + \[C, O] + \[C])
+## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      := K2 + A + C + merge(\[O] + \[O])
+## &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      := K2 + A + C + O
+
+# L(Z) := Z + merge(L(K1) + L(K2) + \[K1, K2])
+##  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     := Z + merge(\[K1, A, B, O] + \[K2, A, C, O] + \[K1, K2])
+## &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     := Z + K1 + merge(\[A, B, O] + \[K2, A, C, O] + \[K2])
+##  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     := Z + K1 + K2 + merge(\[A, B, O] + \[A, C, O])
+## &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     := Z + K1 + K2 + A + merge(\[B, O] + \[C, O])
+## &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     := Z + K1 + K2 + A + B + merge(\[O] + \[C, O])
+## &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     := Z + K1 + K2 + A + B + C + merge(\[O] + \[O])
+## &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     := Z + K1 + K2 + A + B + C + O
