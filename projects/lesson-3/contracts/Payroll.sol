@@ -4,6 +4,8 @@ import './SafeMath.sol';
 
 contract Payroll {
 
+    using SafeMath for uint;
+
     struct Employee {
         address id;
         uint salary;
@@ -29,7 +31,7 @@ contract Payroll {
 
     function addEmployee(address employeeAddress, uint salary) public validSalary(salary) ownerOnly {
 
-        uint salaryInWei = SafeMath.mul(uint(salary), 1 ether);
+        uint salaryInWei = salary.mul(1 ether);
         employees[employeeAddress] = Employee(employeeAddress, salaryInWei, now);
 
         totalSalary = SafeMath.add(totalSalary, salaryInWei);
@@ -53,7 +55,7 @@ contract Payroll {
 
         Employee employee = employees[employeeId];
 
-        totalSalary = SafeMath.sub(totalSalary, employee.salary);
+        totalSalary = totalSalary.sub(employee.salary);
         assert (employee.id != 0x0);
 
         delete employees[employeeId];
@@ -75,7 +77,7 @@ contract Payroll {
 
         Employee employee = employees[employeeAddress];
 
-        uint salaryInWei = SafeMath.mul(salary, 1 ether);
+        uint salaryInWei = salary.mul(1 ether);
         assert (employee.salary != salaryInWei);
 
         uint lastSalary = employee.salary;
@@ -86,8 +88,7 @@ contract Payroll {
 
         employee.lastPayDay = now;
 
-        totalSalary = SafeMath.add(totalSalary, salaryInWei);
-        totalSalary = SafeMath.sub(totalSalary, lastSalary);
+        totalSalary = totalSalary.add(salaryInWei).sub(lastSalary);
 
         if (remainingPayDay > 0) {
             employee.id.transfer(remainingPayDay / payDuration * lastSalary);
