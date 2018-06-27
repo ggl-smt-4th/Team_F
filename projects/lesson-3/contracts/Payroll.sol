@@ -2,7 +2,8 @@
 pragma solidity ^0.4.14;
 import './SafeMath.sol';
 import './Ownable.sol';
-contract Payroll is Ownable{
+contract Payroll is Ownable {
+using SafeMath for uint; 
     struct Employee{
         address id;
         uint salary;
