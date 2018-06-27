@@ -1,8 +1,9 @@
 pragma solidity ^0.4.14;
 
 import './SafeMath.sol';
+import './Ownable.sol';
 
-contract Payroll {
+contract Payroll is Ownable {
 
     using SafeMath for uint;
 
@@ -16,7 +17,6 @@ contract Payroll {
 
     uint totalSalary;
 
-    address owner;
     mapping(address => Employee) public employees;
 
     function Payroll() payable public {
@@ -29,7 +29,7 @@ contract Payroll {
         _;
     }
 
-    function addEmployee(address employeeAddress, uint salary) public validSalary(salary) ownerOnly {
+    function addEmployee(address employeeAddress, uint salary) public validSalary(salary) onlyOwner {
 
         uint salaryInWei = salary.mul(1 ether);
         employees[employeeAddress] = Employee(employeeAddress, salaryInWei, now);
@@ -38,20 +38,21 @@ contract Payroll {
 
     }
 
-    function checkEmployee(address employeeAddress) public employeeExist(employeeAddress) returns (uint salary, uint lastPayDay) {
+    function checkEmployee(address employeeAddress) public onlyOwner employeeExist(employeeAddress) returns (uint salary, uint
+        lastPayDay) {
         Employee employee = employees[employeeAddress];
         salary = employee.salary;
         lastPayDay = employee.lastPayDay;
     }
 
-    function changePaymentAddress(address oldAddress, address newAddress) public ownerOnly employeeExist(oldAddress) {
+    function changePaymentAddress(address oldAddress, address newAddress) public onlyOwner employeeExist(oldAddress) {
         Employee oldEmployee = employees[oldAddress];
         oldEmployee.id = newAddress;
         employees[newAddress] = oldEmployee;
         delete employees[oldAddress];
     }
 
-    function removeEmployee(address employeeId) public ownerOnly employeeExist(employeeId) {
+    function removeEmployee(address employeeId) public onlyOwner employeeExist(employeeId) {
 
         Employee employee = employees[employeeId];
 
@@ -62,17 +63,12 @@ contract Payroll {
 
     }
 
-    modifier ownerOnly {
-        require(msg.sender == owner);
-        _;
-    }
-
     modifier employeeExist (address employeeAddress) {
         assert (employees[employeeAddress].id != 0x0);
         _;
     }
 
-    function updateEmployee(address employeeAddress, uint salary) public validSalary(salary) ownerOnly employeeExist
+    function updateEmployee(address employeeAddress, uint salary) public validSalary(salary) onlyOwner employeeExist
     (employeeAddress) {
 
         Employee employee = employees[employeeAddress];
