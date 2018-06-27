@@ -29,10 +29,10 @@ contract Payroll {
 
     function addEmployee(address employeeAddress, uint salary) public validSalary(salary) ownerOnly {
 
-        uint salaryInEther = SafeMath.mul(uint(salary), 1 ether);
-        employees[employeeAddress] = Employee(employeeAddress, salaryInEther, now);
+        uint salaryInWei = SafeMath.mul(uint(salary), 1 ether);
+        employees[employeeAddress] = Employee(employeeAddress, salaryInWei, now);
 
-        totalSalary += salaryInEther;
+        totalSalary = SafeMath.add(totalSalary, salaryInWei);
 
     }
 
@@ -53,7 +53,7 @@ contract Payroll {
 
         Employee employee = employees[employeeId];
 
-        totalSalary -= employee.salary;
+        totalSalary = SafeMath.sub(totalSalary, employee.salary);
         assert (employee.id != 0x0);
 
         delete employees[employeeId];
@@ -75,18 +75,19 @@ contract Payroll {
 
         Employee employee = employees[employeeAddress];
 
-        uint salaryInETH = SafeMath.mul(uint(salary), 1 ether);
-        assert (employee.salary != salaryInETH);
+        uint salaryInWei = SafeMath.mul(salary, 1 ether);
+        assert (employee.salary != salaryInWei);
 
         uint lastSalary = employee.salary;
 
-        employee.salary = salaryInETH;
+        employee.salary = salaryInWei;
 
         uint remainingPayDay = (now - employee.lastPayDay);
 
         employee.lastPayDay = now;
 
-        totalSalary += salaryInETH - lastSalary;
+        totalSalary = SafeMath.add(totalSalary, salaryInWei);
+        totalSalary = SafeMath.sub(totalSalary, lastSalary);
 
         if (remainingPayDay > 0) {
             employee.id.transfer(remainingPayDay / payDuration * lastSalary);
