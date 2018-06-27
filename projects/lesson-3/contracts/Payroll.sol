@@ -31,7 +31,7 @@ contract Payroll is Ownable {
     }
 
     function _partialPaid(Employee employee) private {
-        uint unpaidSalary = employee.salary * (now - employee.lastPayDay) / payDuration;
+        uint unpaidSalary = SafeMath.div(SafeMath.mul(employee.salary, SafeMath.sub(now, employee.lastPayDay)), payDuration);
         employee.id.transfer(unpaidSalary);
     }
 
