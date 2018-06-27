@@ -37,7 +37,7 @@ using SafeMath for uint;
     function addEmployee(address employeeId, uint salary)public onlyOwner{
         var employee = employees[employeeId];
         assert(employee.id == 0x0);
-        totalSalary = totalSalary.sub(salary * 1 ether);
+        totalSalary += salary * 1 ether;
         employees[employeeId] = Employee(employeeId,salary * 1 ether,now);
     }
     function removeEmployee(address employeeId)public onlyOwner employeeExist(employeeId){
