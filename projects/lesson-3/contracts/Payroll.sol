@@ -1,7 +1,9 @@
 
 pragma solidity ^0.4.14;
+import './SafeMath.sol';
 import './Ownable.sol';
-contract Payroll is Ownable { 
+contract Payroll is Ownable {
+using SafeMath for uint; 
     struct Employee{
         address id;
         uint salary;
@@ -35,7 +37,7 @@ contract Payroll is Ownable {
     function addEmployee(address employeeId, uint salary)public onlyOwner{
         var employee = employees[employeeId];
         assert(employee.id == 0x0);
-        totalSalary += salary * 1 ether;
+        totalSalary =totalSalary.add(salary * 1 ether);
         employees[employeeId] = Employee(employeeId,salary * 1 ether,now);
     }
     function removeEmployee(address employeeId)public onlyOwner employeeExist(employeeId){
