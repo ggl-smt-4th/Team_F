@@ -12,7 +12,11 @@ contract Payroll is Ownable{
 
     address owner;
     mapping(address => Employee) public employees;
-    uint totalSalary;
+    uint totalSalary = 0;
+	
+	function Payroll() payable public {
+        owner = msg.sender;
+    }
     
     modifier employeeExist(address employeeId){
         var employee = employees[employeeId];
