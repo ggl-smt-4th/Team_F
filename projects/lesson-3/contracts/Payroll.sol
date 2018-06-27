@@ -34,8 +34,9 @@ contract Payroll is Ownable {
         // TODO: your code here
         var employee = employees[employeeId];
         assert(employee.id == 0x0);
+        assert(salary > 0);
+        
         totalSalary += salary * 1 ether;
-
         employees[employeeId] = Employee(employeeId, salary * 1 ether, now);  
     }
 
@@ -83,7 +84,7 @@ contract Payroll is Ownable {
         return calculateRunway() > 0;
     }
 
-    function getPaid() public employeeExist(msg.sender) {
+    function getPaid() payable public employeeExist(msg.sender) {
         // TODO: your code here
         var employee = employees[msg.sender];
         
