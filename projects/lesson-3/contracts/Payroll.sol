@@ -1,6 +1,11 @@
 pragma solidity ^0.4.14;
 
-contract Payroll {
+import './SafeMath.sol';
+import './Ownable.sol';
+
+contract Payroll is Ownable {
+
+    using SafeMath for uint;
 
     struct Employee {
         address id;
@@ -8,11 +13,10 @@ contract Payroll {
         uint lastPayDay;
     }
 
-    uint constant payDuration = 31 days;
+    uint constant payDuration = 30 days;
 
     uint totalSalary;
 
-    address owner;
     mapping(address => Employee) public employees;
 
     function Payroll() payable public {
@@ -20,42 +24,43 @@ contract Payroll {
         totalSalary = 0;
     }
 
-    function addEmployee(address employeeAddress, uint salary) public ownerOnly {
-
-        uint salaryInEther = salary * 1 ether;
-        employees[employeeAddress] = Employee(employeeAddress, salaryInEther, now);
-
-        totalSalary += salaryInEther;
-        
+    modifier validSalary(uint salary) {
+        SafeMath.mul(salary, 1 ether);
+        _;
     }
 
-    function checkEmployee(address employeeAddress) public employeeExist(employeeAddress) returns (uint salary, uint lastPayDay) {
+    function addEmployee(address employeeAddress, uint salary) public validSalary(salary) onlyOwner {
+
+        uint salaryInWei = salary.mul(1 ether);
+        employees[employeeAddress] = Employee(employeeAddress, salaryInWei, now);
+
+        totalSalary = SafeMath.add(totalSalary, salaryInWei);
+
+    }
+
+    function checkEmployee(address employeeAddress) public onlyOwner employeeExist(employeeAddress) returns (uint salary, uint
+        lastPayDay) {
         Employee employee = employees[employeeAddress];
         salary = employee.salary;
         lastPayDay = employee.lastPayDay;
     }
 
-    function changePaymentAddress(address oldAddress, address newAddress) public ownerOnly employeeExist(oldAddress) {
+    function changePaymentAddress(address oldAddress, address newAddress) public onlyOwner employeeExist(oldAddress) {
         Employee oldEmployee = employees[oldAddress];
         oldEmployee.id = newAddress;
         employees[newAddress] = oldEmployee;
         delete employees[oldAddress];
     }
 
-    function removeEmployee(address employeeId) public ownerOnly employeeExist(employeeId) {
+    function removeEmployee(address employeeId) public onlyOwner employeeExist(employeeId) {
 
         Employee employee = employees[employeeId];
 
-        totalSalary -= employee.salary;
+        totalSalary = totalSalary.sub(employee.salary);
         assert (employee.id != 0x0);
-        
+
         delete employees[employeeId];
 
-    }
-
-    modifier ownerOnly {
-        require(msg.sender == owner);
-        _;
     }
 
     modifier employeeExist (address employeeAddress) {
@@ -63,22 +68,23 @@ contract Payroll {
         _;
     }
 
-    function updateEmployee(address employeeAddress, uint salary) public ownerOnly employeeExist(employeeAddress) {
+    function updateEmployee(address employeeAddress, uint salary) public validSalary(salary) onlyOwner employeeExist
+    (employeeAddress) {
 
         Employee employee = employees[employeeAddress];
 
-        uint salaryInETH = salary * 1 ether;
-        assert (employee.salary != salaryInETH);
-        
+        uint salaryInWei = salary.mul(1 ether);
+        assert (employee.salary != salaryInWei);
+
         uint lastSalary = employee.salary;
 
-        employee.salary = salaryInETH;
+        employee.salary = salaryInWei;
 
         uint remainingPayDay = (now - employee.lastPayDay);
 
         employee.lastPayDay = now;
 
-        totalSalary += salaryInETH - lastSalary;
+        totalSalary = totalSalary.add(salaryInWei).sub(lastSalary);
 
         if (remainingPayDay > 0) {
             employee.id.transfer(remainingPayDay / payDuration * lastSalary);
@@ -93,8 +99,8 @@ contract Payroll {
 
         require(totalSalary > 0);
 
-        return this.balance / totalSalary;
-        
+        return address(this).balance / totalSalary;
+
     }
 
     function hasEnoughFund() public view returns (bool) {
