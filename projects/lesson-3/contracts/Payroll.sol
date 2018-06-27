@@ -14,7 +14,7 @@ contract Payroll is Ownable {
         uint lastPayday;
     }
 
-    uint constant payDuration = 30 days;
+    uint constant payDuration = 10 seconds;
     uint public totalSalary = 0;
 
     mapping(address => Employee) public employees;
@@ -26,7 +26,7 @@ contract Payroll is Ownable {
     }
 
     function _partialPaid(Employee employee) private {
-      uint payment = employee.salary * (now - employee.lastPayday) / payDuration;
+      uint payment = employee.salary.mul(now.sub(employee.lastPayday)).div(payDuration);
       employee.id.transfer(payment);
     }
 
@@ -34,10 +34,9 @@ contract Payroll is Ownable {
         // TODO: your code here
         var employee = employees[employeeId];
         assert(employee.id == 0x0);
-        assert(salary > 0);
         
-        totalSalary += salary * 1 ether;
-        employees[employeeId] = Employee(employeeId, salary * 1 ether, now);  
+        totalSalary = totalSalary.add(salary.mul(1 ether));
+        employees[employeeId] = Employee(employeeId, salary.mul(1 ether), now);  
     }
 
     function removeEmployee(address employeeId) public onlyOwner employeeExist(employeeId) {
@@ -45,7 +44,7 @@ contract Payroll is Ownable {
         var employee = employees[employeeId];
 
         _partialPaid(employee); 
-        totalSalary -= employees[employeeId].salary;
+        totalSalary = totalSalary.sub(employees[employeeId].salary);
         delete employees[employeeId]; 
         return;
     }
@@ -62,12 +61,12 @@ contract Payroll is Ownable {
         // TODO: your code here
         var employee = employees[employeeId];
 
-        _partialPaid(employees[employeeId]); 
-        totalSalary -= employees[employeeId].salary;
+        _partialPaid(employee); 
+        totalSalary = totalSalary.sub(employee.salary);
         
-        employees[employeeId].salary = salary * 1 ether;
-        totalSalary += employees[employeeId].salary;
-        employees[employeeId].lastPayday = now; 
+        employee.salary = salary.mul(1 ether);
+        totalSalary = totalSalary.add(employee.salary);
+        employee.lastPayday = now; 
     }
 
     function addFund() payable public returns (uint) {
@@ -84,7 +83,7 @@ contract Payroll is Ownable {
         return calculateRunway() > 0;
     }
 
-    function getPaid() payable public employeeExist(msg.sender) {
+    function getPaid() public employeeExist(msg.sender) {
         // TODO: your code here
         var employee = employees[msg.sender];
         
