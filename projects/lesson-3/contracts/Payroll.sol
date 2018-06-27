@@ -6,6 +6,10 @@ import './Ownable.sol';
 contract Payroll is Ownable {
 
     using SafeMath for uint;
+    
+    function Payroll() payable public {
+        owner = msg.sender;
+    }
 
     struct Employee {
         // TODO, your code here
