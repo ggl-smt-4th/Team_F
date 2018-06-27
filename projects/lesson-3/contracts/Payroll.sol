@@ -43,9 +43,9 @@ contract Payroll is Ownable {
         // TODO: your code here
         var employee = employees[employeeId];
 
-        _partialPaid(employee); //pay salary before delete the employee.
+        _partialPaid(employee); 
         totalSalary -= employees[employeeId].salary;
-        delete employees[employeeId]; //notice: the space of this element is kept.
+        delete employees[employeeId]; 
         return;
     }
 
@@ -61,7 +61,7 @@ contract Payroll is Ownable {
         // TODO: your code here
         var employee = employees[employeeId];
 
-        _partialPaid(employees[employeeId]); //pay salary before delete the employee.
+        _partialPaid(employees[employeeId]); 
         totalSalary -= employees[employeeId].salary;
         
         employees[employeeId].salary = salary * 1 ether;
