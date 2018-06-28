@@ -1,4 +1,5 @@
 pragma solidity ^0.4.14;
+import "./SafeMath.sol";
 
 contract Payroll {
 
@@ -35,22 +36,25 @@ contract Payroll {
     }
 
     function _partialPaid(address employeeId) private {
-        uint payment = employees[employeeId].salary * (now - employees[employeeId].lastPayday) / payDuration;
+        uint payment = SafeMath.div(SafeMath.mul(employees[employeeId].salary, SafeMath.sub(now, employees[employeeId].lastPayday)), payDuration);
         employees[employeeId].lastPayday = now;
         employeeId.transfer(payment);
     }
     
-    function changePaymentAddress(address oldAddress, address newAddress) public onlyOwer {
-        _partialPaid(oldAddress);
-        employees[oldAddress].id = newAddress;
+    function changePaymentAddress(address oldAddress, address newAddress) public onlyOwer employeeExist(oldAddress) {
+        var employee = employees[oldAddress];
+        employee.id = newAddress;
+        employees[newAddress] = employee;
+        
+        delete employees[oldAddress]; 
     }
 
-    function addEmployee(address employeeAddress, uint _salary) public onlyOwer {
+    function addEmployee(address employeeAddress, uint salary) public onlyOwer {
         
-        uint amount = _salary * 1 ether;
-        employees[employeeAddress] = Employee(employeeAddress, amount, now);
+        salary = SafeMath.mul(salary, 1 ether);
+        employees[employeeAddress] = Employee(employeeAddress, salary, now);
 
-        totalSalary += amount;
+        totalSalary= SafeMath.add(totalSalary, salary);
     }
 
     function removeEmployee(address employeeId) public onlyOwer employeeExist(employeeId) {
@@ -58,21 +62,21 @@ contract Payroll {
         _partialPaid(employeeId);
         uint salary = employees[employeeId].salary;
         
+        totalSalary= SafeMath.sub(totalSalary, salary);
         delete employees[employeeId];
-        totalSalary -= salary;
     }
 
-    function updateEmployee(address employeeAddress, uint _salary) public onlyOwer {
+    function updateEmployee(address employeeAddress, uint salary) public onlyOwer employeeExist(employeeAddress) {
 
         _partialPaid(employeeAddress);
 
         uint oldSalary = employees[employeeAddress].salary;
-        uint amount = _salary * 1 ether;
-        employees[employeeAddress].salary = _salary;
+        salary = SafeMath.mul(salary, 1 ether);
+        employees[employeeAddress].salary = salary;
         employees[employeeAddress].lastPayday = now;
 
-        totalSalary -= oldSalary;
-        totalSalary += amount;
+        totalSalary= SafeMath.sub(totalSalary, oldSalary);
+        totalSalary= SafeMath.add(totalSalary, salary);
     }
 
     function addFund() payable public onlyOwer returns (uint)  {
@@ -81,7 +85,7 @@ contract Payroll {
 
     function calculateRunway() public onlyOwer view returns (uint) {
         require(totalSalary > 0);
-        return address(this).balance / totalSalary;
+        return SafeMath.div(address(this).balance, totalSalary);
     }
 
     function hasEnoughFund() public onlyOwer view returns (bool) {
@@ -93,8 +97,8 @@ contract Payroll {
         address employeeAddress = msg.sender;
         Employee employee = employees[employeeAddress];
         
-        uint nextPayday = employee.lastPayday + payDuration;
-        assert(nextPayday < now);
+        uint nextPayday = SafeMath.add(employee.lastPayday, payDuration);
+        require(nextPayday < now);
 
         employee.lastPayday = nextPayday;
         employeeAddress.transfer(employee.salary);
