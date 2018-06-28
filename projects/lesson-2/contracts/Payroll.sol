@@ -43,7 +43,7 @@ contract Payroll {
         require(msg.sender == owner);
         
         var (employee, index) = _findEmployee(employeeId);
-	    assert(employee.id != 0x0);
+        assert(employee.id != 0x0);
 	    
 	    _partialPaid(employee);
 	    
