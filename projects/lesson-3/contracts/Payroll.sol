@@ -2,7 +2,7 @@ pragma solidity ^0.4.14;
 import "./SafeMath.sol";
 
 contract Payroll {
-
+    
     struct Employee {
         address id;
         uint salary;
