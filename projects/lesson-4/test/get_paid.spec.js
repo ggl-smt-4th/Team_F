@@ -4,9 +4,6 @@ contract('Payroll', function (accounts) {
     const owner = accounts[0];
 
     const employee = accounts[1];
-    const employee2 = accounts[2];
-
-    const guest = accounts[5];
 
     const payDuration = 31 * 86400;
 
@@ -31,7 +28,7 @@ contract('Payroll', function (accounts) {
             })
     });
 
-    it('get paid before pay duration', function () {
+    it('should not get paid before pay duration', function () {
         let payroll;
 
         Payroll.new().then(function (instance) {
