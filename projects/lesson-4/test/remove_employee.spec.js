@@ -13,7 +13,7 @@ contract('Payroll', function (accounts) {
 
         Payroll.new().then(function (instance) {
             payroll = instance;
-            return instance.addFund({from: owner, value: web3.toWei(30, 'ether')});
+            return instance.addFund({from: owner, value: web3.toWei(2, 'ether')});
         })
             .then(function () {
             return payroll.addEmployee(employee, 1, {from: owner});
@@ -31,13 +31,32 @@ contract('Payroll', function (accounts) {
 
         Payroll.new().then(function (instance) {
             payroll = instance;
-            return instance.addFund({from: owner, value: web3.toWei(30, 'ether')});
+            return instance.addFund({from: owner, value: web3.toWei(2, 'ether')});
         })
             .then(function () {
                 return payroll.addEmployee(employee, 1, {from: owner});
             })
             .then(function () {
                 return payroll.removeEmployee(employee, {from: guest});
+            })
+            .then(function () {
+                assert(false, 'remove employee by guest should fail');
+            })
+    });
+
+    xit('should not remove non-exist employee', function () {
+
+        var payroll;
+
+        Payroll.new().then(function (instance) {
+            payroll = instance;
+            return instance.addFund({from: owner, value: web3.toWei(2, 'ether')});
+        })
+            .then(function () {
+                return payroll.addEmployee(employee, 1, {from: owner});
+            })
+            .then(function () {
+                return payroll.removeEmployee(employee2, {from: owner});
             })
             .then(function () {
                 assert(false, 'remove employee by guest should fail');
