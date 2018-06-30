@@ -2,14 +2,14 @@ var Payroll = artifacts.require("Payroll");
 
 contract('Payroll', function (accounts) {
 
-    var owner = accounts[0];
+    const owner = accounts[0];
 
-    var employee = accounts[1];
+    const employee = accounts[1];
 
-    var guest = accounts[2];
+    const guest = accounts[2];
 
     it('should run', function () {
-        var payroll;
+        let payroll;
         Payroll.new().then(function (instance) {
             payroll = instance;
             payroll.addEmployee(employee, 1);
@@ -23,7 +23,7 @@ contract('Payroll', function (accounts) {
     });
 
     it('addEmployee should reject illegal salary', function () {
-        var payroll;
+        let payroll;
         Payroll.new().then(function (instance) {
             payroll = instance;
             payroll.addEmployee(employee, -1);
@@ -33,7 +33,7 @@ contract('Payroll', function (accounts) {
     });
 
     it("guest should fail to call addEmployee", function () {
-        var payroll;
+        let payroll;
         Payroll.new().then(function (instance) {
             payroll = instance;
             payroll.addEmployee(employee, 1, {from: guest});
@@ -43,7 +43,7 @@ contract('Payroll', function (accounts) {
     });
 
     it("employee should fail to call addEmployee", function () {
-        var payroll;
+        let payroll;
         Payroll.new().then(function (instance) {
             payroll = instance;
             payroll.addEmployee(employee, 1, {from: employee});

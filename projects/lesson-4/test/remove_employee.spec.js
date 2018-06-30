@@ -1,15 +1,15 @@
-var Payroll = artifacts.require('Payroll');
+const Payroll = artifacts.require('Payroll');
 
 contract('Payroll', function (accounts) {
-    var owner = accounts[0];
+    const owner = accounts[0];
 
-    var employee = accounts[1];
-    var employee2 = accounts[2];
+    const employee = accounts[1];
+    const employee2 = accounts[2];
 
-    var guest = accounts[5];
+    const guest = accounts[5];
 
     it('owner should be able to remove employee', function () {
-        var payroll;
+        let payroll;
 
         Payroll.new().then(function (instance) {
             payroll = instance;
@@ -27,7 +27,7 @@ contract('Payroll', function (accounts) {
     });
 
     it('non owner should not be able to remove employee', function () {
-        var payroll;
+        let payroll;
 
         Payroll.new().then(function (instance) {
             payroll = instance;
@@ -46,7 +46,7 @@ contract('Payroll', function (accounts) {
 
     it('should not remove non-exist employee', function () {
 
-        var payroll;
+        let payroll;
 
         Payroll.new().then(function (instance) {
             payroll = instance;
