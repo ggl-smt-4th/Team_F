@@ -13,7 +13,7 @@ contract('Payroll', function (accounts) {
 
         Payroll.new().then(function (instance) {
             payroll = instance;
-            return instance.addFund({from: owner, value: web3.toWei(30, 'ether')});
+            instance.addFund({from: owner, value: web3.toWei(30, 'ether')});
         })
             .then(function () {
             return payroll.addEmployee(employee, 1, {from: owner});
@@ -31,7 +31,7 @@ contract('Payroll', function (accounts) {
 
         Payroll.new().then(function (instance) {
             payroll = instance;
-            return instance.addFund({from: owner, value: web3.toWei(30, 'ether')});
+            instance.addFund({from: owner, value: web3.toWei(30, 'ether')});
         })
             .then(function () {
                 return payroll.addEmployee(employee, 1, {from: owner});
