@@ -14,11 +14,11 @@ contract('Payroll', function (accounts) {
             payroll = instance;
             payroll.addEmployee(employee, 1);
         }).then(function () {
-            payroll.addFund({from: owner, value: web3.toWei(30, 'ether')});
+            payroll.addFund({from: owner, value: web3.toWei(2, 'ether')});
         }).then(() => {
             return payroll.calculateRunway();
         }).then(runway => {
-            assert.equal(runway, 30, "runway should beo 30 / 1");
+            assert.equal(runway, 2, "runway should beo 30 / 1");
         });
     });
 

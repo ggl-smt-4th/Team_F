@@ -44,7 +44,7 @@ contract('Payroll', function (accounts) {
             })
     });
 
-    xit('should not remove non-exist employee', function () {
+    it('should not remove non-exist employee', function () {
 
         var payroll;
 
