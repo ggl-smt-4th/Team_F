@@ -6,9 +6,11 @@ contract('Payroll', function (accounts) {
 
     var employee = accounts[1];
 
+    var guest = accounts[2];
+
     it('should run', function () {
         var payroll;
-        Payroll.deployed().then(function (instance) {
+        Payroll.new().then(function (instance) {
             payroll = instance;
             payroll.addEmployee(employee, 1);
         }).then(function () {
@@ -18,5 +20,35 @@ contract('Payroll', function (accounts) {
         }).then(runway => {
             assert.equal(runway, 30, "runway should beo 30 / 1");
         });
+    });
+
+    it('addEmployee should reject illegal salary', function () {
+        var payroll;
+        Payroll.new().then(function (ance) {
+            payroll = instance;
+            payroll.addEmployee(employee, -1);
+        }).then(() => {
+            assert(false, "adding employee with illegal salary should fail!");
+        })
+    });
+
+    it("guest should fail to call addEmployee", function () {
+        var payroll;
+        Payroll.new().then(function (instance) {
+            payroll = instance;
+            payroll.addEmployee(employee, 1, {from: guest});
+        }).then(() => {
+            assert(false, "adding employee with illegal salary should fail!");
+        })
+    });
+
+    it("employee should fail to call addEmployee", function () {
+        var payroll;
+        Payroll.new().then(function (instance) {
+            payroll = instance;
+            payroll.addEmployee(employee, 1, {from: employee});
+        }).then(() => {
+            assert(false, "adding employee with illegal salary should fail!");
+        })
     });
 });
