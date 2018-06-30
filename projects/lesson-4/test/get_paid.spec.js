@@ -10,7 +10,7 @@ contract('Payroll', function (accounts) {
     it('get paid after pay duration', function () {
         let payroll;
 
-        Payroll.new().then(function (instance) {
+        return Payroll.new().then(function (instance) {
             payroll = instance;
             return instance.addFund({from: owner, value: web3.toWei(2, 'ether')});
         })
@@ -31,7 +31,7 @@ contract('Payroll', function (accounts) {
     it('should not get paid before pay duration', function () {
         let payroll;
 
-        Payroll.new().then(function (instance) {
+        return Payroll.new().then(function (instance) {
             payroll = instance;
             return instance.addFund({from: owner, value: web3.toWei(2, 'ether')});
         })

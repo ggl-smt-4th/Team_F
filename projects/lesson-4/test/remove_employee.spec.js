@@ -11,7 +11,7 @@ contract('Payroll', function (accounts) {
     it('owner should be able to remove employee', function () {
         let payroll;
 
-        Payroll.new().then(function (instance) {
+        return Payroll.new().then(function (instance) {
             payroll = instance;
             return instance.addFund({from: owner, value: web3.toWei(2, 'ether')});
         })
@@ -29,7 +29,7 @@ contract('Payroll', function (accounts) {
     it('non owner should not be able to remove employee', function () {
         let payroll;
 
-        Payroll.new().then(function (instance) {
+        return Payroll.new().then(function (instance) {
             payroll = instance;
             return instance.addFund({from: owner, value: web3.toWei(2, 'ether')});
         })
@@ -48,7 +48,7 @@ contract('Payroll', function (accounts) {
 
         let payroll;
 
-        Payroll.new().then(function (instance) {
+        return Payroll.new().then(function (instance) {
             payroll = instance;
             return instance.addFund({from: owner, value: web3.toWei(2, 'ether')});
         })

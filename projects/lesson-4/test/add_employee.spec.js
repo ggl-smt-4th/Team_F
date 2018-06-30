@@ -10,7 +10,7 @@ contract('Payroll', function (accounts) {
 
     it('should run', function () {
         let payroll;
-        Payroll.new().then(function (instance) {
+        return Payroll.new().then(function (instance) {
             payroll = instance;
             payroll.addEmployee(employee, 1);
         }).then(function () {
@@ -24,7 +24,7 @@ contract('Payroll', function (accounts) {
 
     it('addEmployee should reject illegal salary', function () {
         let payroll;
-        Payroll.new().then(function (instance) {
+        return Payroll.new().then(function (instance) {
             payroll = instance;
             payroll.addEmployee(employee, -1);
         }).then(() => {
@@ -34,7 +34,7 @@ contract('Payroll', function (accounts) {
 
     it("guest should fail to call addEmployee", function () {
         let payroll;
-        Payroll.new().then(function (instance) {
+        return Payroll.new().then(function (instance) {
             payroll = instance;
             payroll.addEmployee(employee, 1, {from: guest});
         }).then(() => {
@@ -44,7 +44,7 @@ contract('Payroll', function (accounts) {
 
     it("employee should fail to call addEmployee", function () {
         let payroll;
-        Payroll.new().then(function (instance) {
+        return Payroll.new().then(function (instance) {
             payroll = instance;
             payroll.addEmployee(employee, 1, {from: employee});
         }).then(() => {
