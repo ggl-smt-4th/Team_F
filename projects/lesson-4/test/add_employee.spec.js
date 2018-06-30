@@ -24,7 +24,7 @@ contract('Payroll', function (accounts) {
 
     it('addEmployee should reject illegal salary', function () {
         var payroll;
-        Payroll.new().then(function (ance) {
+        Payroll.new().then(function (instance) {
             payroll = instance;
             payroll.addEmployee(employee, -1);
         }).then(() => {
