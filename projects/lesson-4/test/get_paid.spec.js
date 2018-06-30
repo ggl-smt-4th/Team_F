@@ -25,7 +25,9 @@ contract('Payroll', function (accounts) {
             })
             .then(function () {
                 assert(true, 'should receive payment');
-            })
+            }).catch(error => {
+                assert.include(error.toString(), "Error: VM Exception", "Cannot call removeEmployee() by guest");
+            });
     });
 
     it('should not get paid before pay duration', function () {
@@ -43,7 +45,9 @@ contract('Payroll', function (accounts) {
             })
             .then(function () {
                 assert(false, 'should not receive payment');
-            })
+            }).catch(error => {
+                assert.include(error.toString(), "Error: VM Exception", "Cannot call removeEmployee() by guest");
+            });
     });
 
 });

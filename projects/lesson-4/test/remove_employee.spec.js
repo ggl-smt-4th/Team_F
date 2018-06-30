@@ -23,7 +23,9 @@ contract('Payroll', function (accounts) {
         })
             .then(function () {
             assert(true, 'add employee should succeeded');
-        })
+        }).catch(error => {
+                assert.include(error.toString(), "Error: VM Exception", "Cannot call removeEmployee() by guest");
+            });
     });
 
     it('non owner should not be able to remove employee', function () {
@@ -41,7 +43,9 @@ contract('Payroll', function (accounts) {
             })
             .then(function () {
                 assert(false, 'remove employee by guest should fail');
-            })
+            }).catch(error => {
+                assert.include(error.toString(), "Error: VM Exception", "Cannot call removeEmployee() by guest");
+            });
     });
 
     it('should not remove non-exist employee', function () {
@@ -60,7 +64,9 @@ contract('Payroll', function (accounts) {
             })
             .then(function () {
                 assert(false, 'remove employee by guest should fail');
-            })
+            }).catch(error => {
+                assert.include(error.toString(), "Error: VM Exception", "Cannot call removeEmployee() by guest");
+            });
     });
 
 });

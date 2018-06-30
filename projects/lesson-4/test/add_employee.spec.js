@@ -19,7 +19,9 @@ contract('Payroll', function (accounts) {
             return payroll.calculateRunway();
         }).then(runway => {
             assert.equal(runway, 2, "runway should beo 30 / 1");
-        });
+        }).catch(error => {
+            assert.include(error.toString(), "Error: VM Exception", "Cannot call removeEmployee() by guest");
+        });;
     });
 
     it('addEmployee should reject illegal salary', function () {
@@ -29,7 +31,9 @@ contract('Payroll', function (accounts) {
             payroll.addEmployee(employee, -1);
         }).then(() => {
             assert(false, "adding employee with illegal salary should fail!");
-        })
+        }).catch(error => {
+            assert.include(error.toString(), "Error: VM Exception", "Cannot call removeEmployee() by guest");
+        });
     });
 
     it("guest should fail to call addEmployee", function () {
@@ -39,7 +43,9 @@ contract('Payroll', function (accounts) {
             payroll.addEmployee(employee, 1, {from: guest});
         }).then(() => {
             assert(false, "adding employee with illegal salary should fail!");
-        })
+        }).catch(error => {
+            assert.include(error.toString(), "Error: VM Exception", "Cannot call removeEmployee() by guest");
+        });
     });
 
     it("employee should fail to call addEmployee", function () {
@@ -49,6 +55,8 @@ contract('Payroll', function (accounts) {
             payroll.addEmployee(employee, 1, {from: employee});
         }).then(() => {
             assert(false, "adding employee with illegal salary should fail!");
-        })
+        }).catch(error => {
+            assert.include(error.toString(), "Error: VM Exception", "Cannot call removeEmployee() by guest");
+        });
     });
 });
