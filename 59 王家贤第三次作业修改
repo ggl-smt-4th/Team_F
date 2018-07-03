@@ -83,9 +83,7 @@ contract Payroll {
     
     function getpaid() employee_exit(msg.sender) {
         var(employee2) = employees[msg.sender];
-
-        assert (enoughMoney() != 0);
-           
+        assert (enoughMoney() != 0);           
         uint nextPayday = employee2.lastPayday + payDuration;
         assert(nextPayday < now);
         employee2.lastPayday = nextPayday;
