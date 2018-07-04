@@ -1,0 +1,94 @@
+pragma solidity ^0.4.14;
+
+contract Payroll {
+    struct Employee{
+        address id;
+        uint salary;
+        uint lastPayday;
+    }
+    
+    uint constant payDuration = 10 seconds;
+    address owner;
+    mapping(address => Employee) employees;
+    uint total_salary = 0;
+    
+    function Payroll() {
+        owner = msg.sender;
+    }
+    
+    modifier only_owner{
+        require(owner == msg.sender);
+        _;
+    }
+    
+    modifier employee_exit(address newAddress) {
+        var employee = employees[newAddress];
+        assert (employee.id != 0x0);
+        _;
+    }
+    
+    function changePaymentAdress(address employeeID,address newAddress) only_owner employee_exit(employeeID) {
+        var employee = employees[employeeID];
+        employee.id = newAddress;
+        
+    }
+    
+    function partialpaid(Employee employee ) private{
+        uint needPay = employee.salary*(now - employee.lastPayday)/payDuration;
+        employee.id.transfer(needPay);
+    }
+    
+    
+    
+    function add_employee(address employeeID, uint s) only_owner {
+        var (em) = employees[employeeID];
+        assert (em.id == 0x0);
+        total_salary += s*1 ether;
+        employees[employeeID] = Employee(employeeID,(s*1 ether),now);    
+    }
+    
+    function remove_employee(address employeeID) only_owner employee_exit(employeeID){
+       
+        var employee = employees[employeeID];
+        total_salary -= employee.salary;
+        partialpaid(employees[employeeID]);
+        delete(employees[employeeID]);
+       
+    }
+    
+    function check_employee(address employeeID) returns(uint salary,uint lastPayday) {
+        var employee = employees[employeeID];
+        salary = employee.salary;
+        lastPayday = employee.lastPayday;
+    }
+    
+    function updateemployee(address newAddress , uint newSalary) payable only_owner employee_exit(newAddress){
+        var employee = employees[newAddress];
+        require(newSalary != 0);
+        
+        total_salary -= employee.salary;
+        partialpaid(employee);
+        employee.salary = newSalary * (1 ether);
+        employee.lastPayday = now;
+        total_salary += employee.salary;
+    }
+    
+    function addfun() payable returns(uint){
+        return this.balance;
+    }
+    
+    function enoughMoney() payable returns(uint) {
+        return this.balance/total_salary;
+    }
+    
+    function getpaid() employee_exit(msg.sender) {
+        var(employee2) = employees[msg.sender];
+        assert (enoughMoney() != 0);           
+        uint nextPayday = employee2.lastPayday + payDuration;
+        assert(nextPayday < now);
+        employee2.lastPayday = nextPayday;
+        employee2.id.transfer(employee2.salary);
+
+        }
+    
+}
