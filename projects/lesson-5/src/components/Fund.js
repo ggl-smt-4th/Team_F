@@ -9,23 +9,36 @@ class Fund extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      balance:''
+    };
+ 
   }
-
+  getEmployerInfo = () => {
+    const { payroll, account, web3 } = this.props;
+    payroll.getEmployerInfo.call({
+      from: account,
+    }).then((result) => {
+      this.setState({
+        balance: web3.fromWei(result[0].toNumber()),
+      })
+    });
+  }
   handleSubmit = (ev) => {
     ev.preventDefault();
-    const { payroll, account, web3 } = this.props;
+    const { payroll, account, web3,amount } = this.props;
     payroll.addFund({
       from: account,
       value: web3.toWei(this.state.fund)
     });
+    this.getEmployerInfo();
   }
-
+  
   render() {
     const { account, payroll, web3 } = this.props;
     return (
       <div>
-        <Common account={account} payroll={payroll} web3={web3} />
+        <Common account={account} payroll={payroll} web3={web3} balance={this.state.balance}/>
 
         <Form layout="inline" onSubmit={this.handleSubmit}>
           <FormItem>
@@ -33,6 +46,9 @@ class Fund extends Component {
               min={1}
               onChange={fund => this.setState({fund})}
             />
+          </FormItem>
+          <FormItem>
+              {this.state.money}
           </FormItem>
           <FormItem>
             <Button

@@ -40,6 +40,7 @@ class Common extends Component {
      * this.updateEmployee.stopWatching();
      * this.removeEmployee.stopWatching();
      */
+  
   }
 
   getEmployerInfo = () => {
@@ -62,7 +63,7 @@ class Common extends Component {
         <h2>通用信息</h2>
         <Row gutter={16}>
           <Col span={8}>
-            <Card title="合约金额">{balance} Ether</Card>
+            <Card title="合约金额">{!this.props.balance?balance:this.props.balance} Ether</Card>
           </Col>
           <Col span={8}>
             <Card title="员工人数">{employeeCount}</Card>

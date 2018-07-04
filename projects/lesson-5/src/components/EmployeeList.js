@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Table, Button, Modal, Form, InputNumber, Input, message, Popconfirm } from 'antd';
 
 import EditableCell from './EditableCell';
+import { request } from 'http';
 
 const FormItem = Form.Item;
 
@@ -65,15 +66,43 @@ class EmployeeList extends Component {
   }
 
   loadEmployees(employeeCount) {
+    const {payroll,account,web3 } = this.props;
+    const requsts = [];
+    for(let index = 0;index<employeeCount; index ++){
+      requests.push(payroll.checkEmployee.call(index,{from:account})) 
+    }
   }
 
-  addEmployee = () => {
+  addEmployee = (address, salary) => {
+    const {payroll, employer } = this.props;
+        const {address, salary} = this.state;
+    
+        payroll.addEmployee(address,parseInt(salary), {
+          from: employer,
+          gas: 1000000
+        }).then((result) => {
+          alert('success');
+        });
   }
 
   updateEmployee = (address, salary) => {
+    const {payroll, employer } = this.props;
+        payroll.updateEmployee(address,parseInt(salary), {
+          from: employer,
+          gas: 1000000
+        }).then((result) => {
+          alert('success');
+        });
   }
 
   removeEmployee = (employeeId) => {
+    const {payroll, employer } = this.props;
+    payroll.removeEmployee(this.state.address, {
+      from: employer,
+      gas: 1000000
+    }).then((result) => {
+      alert('success');
+    });
   }
 
   renderModal() {
