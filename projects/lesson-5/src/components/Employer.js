@@ -44,7 +44,7 @@ class Employer extends Component {
       case 'fund':
         return <Fund account={account} payroll={payroll} web3={web3} />;
       case 'employees':
-        return <EmployeeList account={account} payroll={payroll} web3={web3} />
+        return <EmployeeList account={account} payroll={payroll} web3={web3} employer={owner} />
     }
   };
 
