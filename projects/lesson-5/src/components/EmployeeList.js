@@ -65,6 +65,7 @@ class EmployeeList extends Component {
   }
 
   loadEmployees(employeeCount) {
+      const {payroll, employer} = this.props;
   }
 
   addEmployee = () => {
