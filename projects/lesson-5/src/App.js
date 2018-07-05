@@ -31,7 +31,7 @@ class App extends Component {
     .then(results => {
       this.setState({
         web3: results.web3
-      })
+      });
 
       // Instantiate contract once web3 provided.
       this.instantiateContract()
