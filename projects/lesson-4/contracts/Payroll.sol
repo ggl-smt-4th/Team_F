@@ -15,7 +15,7 @@ contract Payroll {
     address owner;
     mapping(address => Employee) public employees;
 
-    function Payroll() payable public {
+    constructor() payable public {
         owner = msg.sender;
     }
 
@@ -30,7 +30,7 @@ contract Payroll {
     }
     
     modifier employeeExist(address _address) {
-        var _employee = employees[_address];
+        Employee storage _employee = employees[_address];
         assert(_employee.id != 0x0);
         _;
     }
@@ -42,7 +42,7 @@ contract Payroll {
     }
     
     function changePaymentAddress(address oldAddress, address newAddress) public onlyOwer employeeExist(oldAddress) {
-        var employee = employees[oldAddress];
+        Employee storage employee = employees[oldAddress];
         employee.id = newAddress;
         employees[newAddress] = employee;
         
@@ -95,7 +95,7 @@ contract Payroll {
     function getPaid() public onlyEmployee employeeExist(msg.sender) {
         
         address employeeAddress = msg.sender;
-        Employee employee = employees[employeeAddress];
+        Employee storage employee = employees[employeeAddress];
         
         uint nextPayday = SafeMath.add(employee.lastPayday, payDuration);
         require(nextPayday < now);
