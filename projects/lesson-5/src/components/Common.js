@@ -53,7 +53,7 @@ class Common extends Component {
         employeeCount: result[2].toNumber()
       })
     });
-  }
+  };
 
   render() {
     const { runway, balance, employeeCount } = this.state;

@@ -14,10 +14,10 @@ class Employer extends Component {
   }
 
   checkEmployee = () => {
-  }
+  };
 
   getPaid = () => {
-  }
+  };
 
   renderContent() {
     const { salary, lastPaidDate, balance } = this.state;

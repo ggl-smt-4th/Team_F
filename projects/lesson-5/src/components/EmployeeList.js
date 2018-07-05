@@ -68,13 +68,13 @@ class EmployeeList extends Component {
   }
 
   addEmployee = () => {
-  }
+  };
 
   updateEmployee = (address, salary) => {
-  }
+  };
 
   removeEmployee = (employeeId) => {
-  }
+  };
 
   renderModal() {
       return (

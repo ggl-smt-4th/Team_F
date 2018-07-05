@@ -30,7 +30,7 @@ class Employer extends Component {
     this.setState({
       mode: key
     });
-  }
+  };
 
   renderContent = () => {
     const { account, payroll, web3 } = this.props;
@@ -42,11 +42,11 @@ class Employer extends Component {
 
     switch(mode) {
       case 'fund':
-        return <Fund account={account} payroll={payroll} web3={web3} />
+        return <Fund account={account} payroll={payroll} web3={web3} />;
       case 'employees':
         return <EmployeeList account={account} payroll={payroll} web3={web3} />
     }
-  }
+  };
 
   render() {
     return (
