@@ -13,13 +13,13 @@ class Employer extends Component {
                 salary: web3.fromWei(ret[0].toNumber()),
                 lastPaidDate: new Date(ret[1].toNumber() * 1000).toString(),
                 balance: web3.fromWei(ret[2].toNumber()),
-            }
+            };
             this.setState(info);
         }).catch((error) => {
             console.log(error);
             message.error(error.message);
         });
-    }
+    };
 
     getPaid = () => {
         const {payroll, account} = this.props;
@@ -30,7 +30,7 @@ class Employer extends Component {
         }).catch((error) => {
             message.error(error.message);
         });
-    }
+    };
 
     constructor(props) {
         super(props);

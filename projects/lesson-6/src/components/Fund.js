@@ -19,7 +19,7 @@ class Fund extends Component {
       from: account,
       value: web3.toWei(this.state.fund)
     });
-  }
+  };
 
   render() {
     const { account, payroll, web3 } = this.props;

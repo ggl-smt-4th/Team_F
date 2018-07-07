@@ -14,7 +14,7 @@ class Common extends Component {
       if (!error) {
         this.getEmployerInfo();
       }
-    }
+    };
 
     this.getEmployerInfo();
   }
@@ -33,7 +33,7 @@ class Common extends Component {
         employeeCount: result[2].toNumber()
       })
     });
-  }
+  };
 
   render() {
     const { runway, balance, employeeCount } = this.state;

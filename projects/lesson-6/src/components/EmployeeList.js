@@ -97,7 +97,7 @@ class EmployeeList extends Component {
                 salary,
                 key: address,
                 lastPayday: new Date().toString(),
-            }
+            };
             this.setState({
                 address: '',
                 salary: '',
@@ -105,7 +105,7 @@ class EmployeeList extends Component {
                 employees: employees.concat([newEmployee]),
             });
         });
-    }
+    };
 
     updateEmployee = (address, salary) => {
         const { payroll, account } = this.props;
@@ -126,7 +126,7 @@ class EmployeeList extends Component {
         }).catch((error) => {
             message.error(error.message);
         });
-    }
+    };
 
     removeEmployee = (employeeId) => {
         const { payroll, account } = this.props;
@@ -144,7 +144,7 @@ class EmployeeList extends Component {
         }).catch((error) => {
             message.error(error.message);
         });
-    }
+    };
 
     renderModal() {
         return (

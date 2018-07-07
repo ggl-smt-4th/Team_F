@@ -14,7 +14,7 @@ const { Header, Content, Footer } = Layout;
 
 class App extends Component {
     constructor(props) {
-        super(props)
+        super(props);
 
         this.state = {
             storageValue: 0,
@@ -31,7 +31,7 @@ class App extends Component {
             .then(results => {
                 this.setState({
                     web3: results.web3
-                })
+                });
 
                 // Instantiate contract once web3 provided.
                 this.instantiateContract()
@@ -49,9 +49,9 @@ class App extends Component {
          * state management library, but for convenience I've placed them here.
          */
 
-        const contract = require('truffle-contract')
-        const Payroll = contract(PayrollContract)
-        Payroll.setProvider(this.state.web3.currentProvider)
+        const contract = require('truffle-contract');
+        const Payroll = contract(PayrollContract);
+        Payroll.setProvider(this.state.web3.currentProvider);
 
         // Get accounts.
         this.state.web3.eth.getAccounts((error, accounts) => {
@@ -61,7 +61,7 @@ class App extends Component {
             });
             Payroll.deployed().then((instance) => {
                 // for debug
-                window.payroll = instance
+                window.payroll = instance;
                 this.setState({
                     payroll: instance
                 });
@@ -73,7 +73,7 @@ class App extends Component {
         this.setState({
             mode: key
         });
-    }
+    };
 
     renderContent = () => {
         const { account, employee, payroll, web3, mode } = this.state;
@@ -84,13 +84,13 @@ class App extends Component {
 
         switch(mode) {
             case 'employer':
-                return <Employer account={account} payroll={payroll} web3={web3} />
+                return <Employer account={account} payroll={payroll} web3={web3} />;
             case 'employee':
-                return <Employee account={employee} payroll={payroll} web3={web3} />
+                return <Employee account={employee} payroll={payroll} web3={web3} />;
             default:
                 return <Alert message="请选一个模式" type="info" showIcon />
         }
-    }
+    };
 
     render() {
         return (
